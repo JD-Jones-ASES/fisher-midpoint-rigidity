@@ -1,4 +1,5 @@
 module
+public import FisherMidpoint.Definitions
 public import FisherMidpoint.Parallel
 public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 
@@ -10,8 +11,6 @@ open Set Filter
 open scoped Topology InnerProductSpace ContDiff
 namespace FisherMidpoint
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
-abbrev jac (F : H → H) := fderiv ℝ F
-
 /-- Christoffel transformation equation in a chart whose ordinary derivative is Levi-Civita. -/
 def AffineFor (Ω : Set H) (F : H → H) (K : H → ProductTensor H) : Prop :=
   ∀ p ∈ Ω, ∀ u v, fderiv ℝ (jac F) p u v = jac F p (K p u v)

@@ -12,15 +12,6 @@ open scoped Topology InnerProductSpace ContDiff
 namespace FisherMidpoint
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 
-/-- In coordinates where the Fisher metric is the ordinary inner product,
-the differentials of the natural and expectation charts are mutually dual. -/
-structure FisherChart (Ω : Set H) (θ η : H → H) : Prop where
-  natural : ∀ x ∈ Ω, ContDiffAt ℝ 4 θ x
-  expected : ∀ x ∈ Ω, ContDiffAt ℝ 4 η x
-  naturalInv : ∀ x ∈ Ω, (jac θ x).IsInvertible
-  expectedInv : ∀ x ∈ Ω, (jac η x).IsInvertible
-  metric : ∀ x ∈ Ω, ∀ a b, ⟪jac η x a,jac θ x b⟫_ℝ = ⟪a,b⟫_ℝ
-
 def connection (F : H → H) (p : H) : ProductTensor H :=
   ((ContinuousLinearMap.compL ℝ H H H) (jac F p).inverse).comp (fderiv ℝ (jac F) p)
 

@@ -12,11 +12,6 @@ namespace FisherMidpoint
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {ι : Type*} [Fintype ι]
 
-def toCanonical (l x : ℝ) : ℝ := if l = 0 then x else (1/l-x)/l
-
-def canonicalLaw (l u : ι → ℝ) : Measure (ι → ℝ) :=
-  Measure.pi (fun i ↦ if l i = 0 then gaussianReal (u i) 1 else gammaMeasure (1/(l i)^2) (1+l i*u i))
-
 theorem canonical_continuous (l : ℝ) : Continuous (toCanonical l) := by
   by_cases h : l = 0 <;> unfold toCanonical <;> simp only [h,ite_true,ite_false] <;> fun_prop
 
@@ -52,9 +47,6 @@ private theorem tilt_map {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y]
     setIntegral_map hs ((hg.exp.div_const _).aestronglyMeasurable) hf.aemeasurable]
   rfl
 
-def naturalDirection (B : OrthonormalBasis ι ℝ H) (F : H → H) (p : H) (u : ι → ℝ) : H :=
-  jac F p (B.toBasis.equivFun.symm u)
-
 private theorem pairing_statistic (B : OrthonormalBasis ι ℝ H) (F G : H → H) (p : H) (u : ι → ℝ) (y : H) :
     pairing u (statistic B F G p y) = ⟪naturalDirection B F p u,y-G p⟫_ℝ := by
   rw [naturalDirection,Module.Basis.equivFun_symm_apply,map_sum,sum_inner]
@@ -64,16 +56,6 @@ open EuclideanMidpointRigidity
 variable {d : ℕ}
 local notation "E" => EuclideanSpace ℝ (Fin d)
 local notation "I" => Fin (Module.finrank ℝ E)
-
-/-- The affine change of statistics, the dual linear change of natural parameters,
-the exact finiteness set and the Gaussian/gamma product under every tilt. -/
-def HasGaussianGammaLaw (μ : Measure E) (F G : E → E) (p : E) : Prop :=
-  ∃ (B : OrthonormalBasis I ℝ E) (l : I → ℝ),
-    let N := naturalDirection B F p
-    let Z := fun y i ↦ toCanonical (l i) (statistic B F G p y i)
-    Function.Bijective N ∧ Function.Bijective Z ∧
-    ∀ u : I → ℝ, (Integrable (fun y ↦ exp ⟪N u,y⟫_ℝ) μ ↔ admissible l u) ∧
-      (admissible l u → (μ.tilted (fun y ↦ ⟪N u,y⟫_ℝ)).map Z = canonicalLaw l u)
 
 theorem canonical_factorization {Ω : Set E} {F G : E → E} {p : E} (μ : Measure E) [IsProbabilityMeasure μ]
     (ho : IsOpen Ω) (hc : IsPreconnected Ω) (hp : p ∈ Ω) (A : FisherChart Ω F G)

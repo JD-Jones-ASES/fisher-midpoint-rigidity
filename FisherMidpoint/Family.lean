@@ -12,20 +12,7 @@ open scoped Topology InnerProductSpace BigOperators ContDiff
 namespace FisherMidpoint
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 
-/-- The log-Laplace transform of the sufficient statistic at the reference member. -/
-def cumulant [MeasurableSpace H] (μ : Measure H) (u : H) : ℝ :=
-  log (∫ y, exp ⟪u,y⟫_ℝ ∂μ)
-
-/-- Natural parameters are measured relative to the reference member at `p`.
-The expectation coordinate is the gradient of the actual log-Laplace transform. -/
-structure MeanCoordinates [MeasurableSpace H] (μ : Measure H) (Ω : Set H) (F G : H → H) (p : H) : Prop where
-  finite : ∀ x ∈ Ω, Integrable (fun y ↦ exp ⟪F x-F p,y⟫_ℝ) μ
-  mean : ∀ x ∈ Ω, HasFDerivAt (cumulant μ) (innerSL ℝ (G x)) (F x-F p)
-
 variable {ι : Type*} [Fintype ι]
-
-def statistic (B : OrthonormalBasis ι ℝ H) (F G : H → H) (p y : H) (i : ι) : ℝ :=
-  ⟪jac F p (B i),y-G p⟫_ℝ
 
 theorem continuous_statistic (B : OrthonormalBasis ι ℝ H) (F G : H → H) (p : H) :
     Continuous (statistic B F G p) := continuous_pi fun i ↦ by unfold statistic; fun_prop

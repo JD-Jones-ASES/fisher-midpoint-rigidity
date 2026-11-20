@@ -1,4 +1,5 @@
 module
+public import FisherMidpoint.Definitions
 public import FisherMidpoint.Gamma
 public import FisherMidpoint.Laplace
 public import Mathlib.MeasureTheory.Measure.Tilted
@@ -10,15 +11,6 @@ noncomputable section
 open MeasureTheory ProbabilityTheory Real Filter Set
 open scoped BigOperators Topology
 namespace FisherMidpoint
-
-/-- Log-partition of the unit-variance centered coordinate in affine natural parameter. -/
-def axisCGF (l u : ℝ) : ℝ := if l = 0 then u^2/2 else u/l - log (1+l*u)/l^2
-
-/-- The Gaussian axis has mean `u`. A nonzero axis is a fixed invertible affine
-image of a gamma variable of shape `1/l²` and rate `1+l*u`. -/
-def factor (l u : ℝ) : Measure ℝ :=
-  if l = 0 then gaussianReal u 1 else
-    (gammaMeasure (1/l^2) (1+l*u)).map (fun y : ℝ ↦ 1/l + (-l)*y)
 
 theorem factor_probability (l u : ℝ) (h : 0 < 1+l*u) : IsProbabilityMeasure (factor l u) := by
   by_cases hl : l = 0
@@ -60,12 +52,6 @@ theorem factor_domain {l u t : ℝ} (hu : 0 < 1+l*u) :
     linarith
 
 variable {ι : Type*} [Fintype ι]
-
-def productLaw (l u : ι → ℝ) : Measure (ι → ℝ) := Measure.pi (fun i ↦ factor (l i) (u i))
-
-def admissible (l u : ι → ℝ) : Prop := ∀ i, 0 < 1 + l i * u i
-
-def pairing (v x : ι → ℝ) : ℝ := ∑ i, v i * x i
 
 theorem product_probability {l u : ι → ℝ} (hu : admissible l u) :
     IsProbabilityMeasure (productLaw l u) := by

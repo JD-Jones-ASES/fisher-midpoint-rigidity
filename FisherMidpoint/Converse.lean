@@ -61,9 +61,6 @@ theorem product_midpoints {ι : Type*} (l : ι → ℝ) (x y : ι → ℝ) :
   intro u v hu hv
   exact ⟨funext fun i ↦ unique _ _ _ _ (hu i),funext fun i ↦ unique _ _ _ _ (hv i)⟩
 
-/-- The first derivative of the standardized log-partition is the expectation coordinate. -/
-def axisMean (l u : ℝ) : ℝ := u / (1+l*u)
-
 theorem axis_cumulant_deriv {l u : ℝ} (hu : 0 < 1+l*u) :
     HasDerivAt (axisCGF l) (axisMean l u) u := by
   have h := ((hasDerivAt_id' u).const_mul l).const_add 1

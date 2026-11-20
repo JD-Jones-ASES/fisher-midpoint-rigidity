@@ -14,13 +14,6 @@ open Set Filter
 open scoped BigOperators Topology ContDiff
 namespace FisherMidpoint
 
-/-- Normalized affine coordinate on a Fisher axis with multiplication coefficient `l`. -/
-def sExp (l t : ℝ) : ℝ := if l = 0 then t else (Real.exp (l*t) - 1) / l
-
-def axisMap {H ι : Type*} [NormedAddCommGroup H] [NormedSpace ℝ H] [Fintype ι]
-    (B : Module.Basis ι ℝ H) (l : ι → ℝ) (z : H) : H :=
-  ∑ i, sExp (l i) (B.repr z i) • B i
-
 @[simp] theorem sExp_zero (l : ℝ) : sExp l 0 = 0 := by simp [sExp]
 
 theorem sExp_hasDerivAt (l t : ℝ) : HasDerivAt (sExp l) (Real.exp (l*t)) t := by

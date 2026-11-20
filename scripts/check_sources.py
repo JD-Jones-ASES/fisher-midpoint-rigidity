@@ -31,6 +31,11 @@ def main() -> None:
         raise ValueError("Challenge exceeds Palomar's source limits")
 
     public_names = re.findall(r"^(?:abbrev|def|structure|theorem) (\w+)", challenge, re.MULTILINE)
+    subprocess.run(
+        ["lake", "env", "lean", "--run", "scripts/compare_interface.lean", *names],
+        cwd=ROOT, check=True,
+    )
+    print(f"PASS recursive declaration comparison for {len(names)} theorems")
     signatures = "".join(f"#check @FisherMidpoint.{name}\n" for name in public_names)
     with tempfile.TemporaryDirectory() as temporary:
         signature_file = Path(temporary) / "Signatures.lean"

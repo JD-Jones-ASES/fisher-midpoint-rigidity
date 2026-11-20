@@ -18,7 +18,7 @@ python3 scripts/check_contracts.py
 lake comparator
 ```
 
-The independent symbolic examples use Python and SymPy 1.14.0.
+The source check compares the independently elaborated statements and their referenced definitions using Lean's own Comparator algorithm. It also audits the permitted axioms. The independent symbolic examples use Python and SymPy 1.14.0.
 
 ```sh
 python3 scripts/exact_replay.py

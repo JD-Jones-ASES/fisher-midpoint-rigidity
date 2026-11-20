@@ -10,17 +10,6 @@ open scoped InnerProductSpace
 namespace FisherMidpoint
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 
-/-- Natural and expectation midpoints of a nearby pair have the same Fisher midpoint
-as the original endpoints. Sums express twice the Fisher midpoint in this chart. -/
-def PreservesAt (F G : H → H) (p : H) : Prop :=
-  ∃ r > (0:ℝ), ∀ P ∈ ball p r, ∀ Q ∈ ball p r, ∀ a ∈ ball p r, ∀ b ∈ ball p r,
-    F a+F a=F P+F Q → G b+G b=G P+G Q → a+b=P+Q
-
-/-- The updated Fisher midpoint is equidistant from the two original endpoints. -/
-def EquidistantAt (F G : H → H) (p : H) : Prop :=
-  ∃ r > (0:ℝ), ∀ P ∈ ball p r, ∀ Q ∈ ball p r, ∀ a ∈ ball p r, ∀ b ∈ ball p r,
-    F a+F a=F P+F Q → G b+G b=G P+G Q → ‖a+b-(2:ℝ)•P‖=‖a+b-(2:ℝ)•Q‖
-
 theorem equidistant_of_preserves {F G : H → H} {p : H} (h : PreservesAt F G p) :
     EquidistantAt F G p := by
   obtain ⟨r,hr,Hr⟩ := h

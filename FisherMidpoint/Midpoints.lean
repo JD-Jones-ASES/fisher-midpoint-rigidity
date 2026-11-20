@@ -15,16 +15,6 @@ variable {d : ℕ}
 local notation "E" => Space d
 abbrev raw (C : E → Cubic d) (x : E) : ProductTensor E := (C x).val
 
-/-- Scalar little-o condition on the actual affine averages, in a Fisher isometry chart.
-The sum of the two displacements is twice the displacement of their Fisher midpoint. -/
-def LongitudinalAt {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
-    (F G : H → H) (p : H) : Prop :=
-  ∀ h : H, ∀ κ > (0:ℝ), ∃ r > (0:ℝ), ∃ δ > (0:ℝ), ∀ t : ℝ, 0 < t → t < δ →
-    ∀ a ∈ ball p r, ∀ b ∈ ball p r,
-      F a + F a = F (p-(t/2)•h) + F (p+(t/2)•h) →
-      G b + G b = G (p-(t/2)•h) + G (p+(t/2)•h) →
-      |⟪h,(a-p)+(b-p)⟫_ℝ| ≤ κ*t^4
-
 private theorem interval_constant {H : Type*} [NormedAddCommGroup H] [NormedSpace ℝ H]
     {f : ℝ → H} (h : ∀ t ∈ Icc (0:ℝ) 1, HasDerivAt f 0 t)
     {t : ℝ} (ht : t ∈ Icc (0:ℝ) 1) : f t = f 0 := by
