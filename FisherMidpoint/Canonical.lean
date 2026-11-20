@@ -9,6 +9,7 @@ noncomputable section
 open MeasureTheory ProbabilityTheory Set Real
 open scoped InnerProductSpace BigOperators Topology
 namespace FisherMidpoint
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {ι : Type*} [Fintype ι]
 
 def toCanonical (l x : ℝ) : ℝ := if l = 0 then x else (1/l-x)/l
@@ -51,8 +52,6 @@ private theorem tilt_map {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y]
     setIntegral_map hs ((hg.exp.div_const _).aestronglyMeasurable) hf.aemeasurable]
   rfl
 
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
-
 def naturalDirection (B : OrthonormalBasis ι ℝ H) (F : H → H) (p : H) (u : ι → ℝ) : H :=
   jac F p (B.toBasis.equivFun.symm u)
 
@@ -63,7 +62,7 @@ private theorem pairing_statistic (B : OrthonormalBasis ι ℝ H) (F G : H → H
 
 open EuclideanMidpointRigidity
 variable {d : ℕ}
-local notation "E" => Space d
+local notation "E" => EuclideanSpace ℝ (Fin d)
 local notation "I" => Fin (Module.finrank ℝ E)
 
 /-- The affine change of statistics, the dual linear change of natural parameters,

@@ -19,6 +19,7 @@ open Set Metric MeasureTheory ProbabilityTheory Real
 open scoped Topology InnerProductSpace BigOperators
 namespace FisherMidpoint
 
+section
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 
 /-- The Jacobian of a parameter chart. -/
@@ -33,6 +34,8 @@ structure FisherChart (Ω : Set H) (θ η : H → H) : Prop where
   expectedInv : ∀ x ∈ Ω, (jac η x).IsInvertible
   metric : ∀ x ∈ Ω, ∀ a b, ⟪jac η x a,jac θ x b⟫_ℝ = ⟪a,b⟫_ℝ
 
+end
+
 /-- Scalar little-o condition on the actual affine averages, in a Fisher isometry chart.
 The sum of the two displacements is twice the displacement of their Fisher midpoint. -/
 def LongitudinalAt {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
@@ -42,6 +45,9 @@ def LongitudinalAt {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
       F a + F a = F (p-(t/2)•h) + F (p+(t/2)•h) →
       G b + G b = G (p-(t/2)•h) + G (p+(t/2)•h) →
       |⟪h,(a-p)+(b-p)⟫_ℝ| ≤ κ*t^4
+
+section
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 
 /-- Natural and expectation midpoints of a nearby pair have the same Fisher midpoint
 as the original endpoints. Sums express twice the Fisher midpoint in this chart. -/
@@ -81,6 +87,11 @@ def canonicalLaw (l u : ι → ℝ) : Measure (ι → ℝ) :=
 def naturalDirection (B : OrthonormalBasis ι ℝ H) (F : H → H) (p : H) (u : ι → ℝ) : H :=
   jac F p (B.toBasis.equivFun.symm u)
 
+end
+
+section
+variable {ι : Type*} [Fintype ι]
+
 /-- Exact finiteness region in the centered natural coordinates. -/
 def admissible (l u : ι → ℝ) : Prop := ∀ i, 0 < 1 + l i * u i
 
@@ -98,6 +109,8 @@ def productLaw (l u : ι → ℝ) : Measure (ι → ℝ) := Measure.pi (fun i �
 
 /-- Natural-parameter pairing in score coordinates. -/
 def pairing (v x : ι → ℝ) : ℝ := ∑ i, v i * x i
+
+end
 
 /-- Normalized affine coordinate on a Fisher axis with multiplication coefficient `l`. -/
 def sExp (l t : ℝ) : ℝ := if l = 0 then t else (Real.exp (l*t) - 1) / l

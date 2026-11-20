@@ -30,7 +30,21 @@ def main() -> None:
     if len(challenge.encode()) > 100 * 1024 or len(challenge.splitlines()) > 1000:
         raise ValueError("Challenge exceeds Palomar's source limits")
 
+    public_names = re.findall(r"^(?:abbrev|def|structure|theorem) (\w+)", challenge, re.MULTILINE)
+    signatures = "".join(f"#check @FisherMidpoint.{name}\n" for name in public_names)
     with tempfile.TemporaryDirectory() as temporary:
+        signature_file = Path(temporary) / "Signatures.lean"
+        reports = []
+        for module in ("Challenge", "Solution"):
+            signature_file.write_text(
+                f"import {module}\nset_option pp.universes true\nset_option pp.fullNames true\n" + signatures
+            )
+            reports.append(subprocess.check_output(
+                ["lake", "env", "lean", str(signature_file)], cwd=ROOT, text=True,
+            ))
+        if reports[0] != reports[1]:
+            raise ValueError("The independently elaborated public declaration signatures differ")
+        print(f"PASS matching signatures for {len(public_names)} public declarations")
         report = Path(temporary) / "Axioms.lean"
         report.write_text("import Solution\n" + "".join(f"#print axioms {n}\n" for n in names))
         out = subprocess.check_output(["lake", "env", "lean", str(report)], cwd=ROOT, text=True)
