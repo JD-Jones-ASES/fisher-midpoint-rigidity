@@ -1,0 +1,22 @@
+name = "fisherMidpointRigidity"
+version = "0.1.0"
+defaultTargets = ["FisherMidpoint"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "fc4f59e577feb1a4956671bc04ac18aaaf8cd842"
+
+[[require]]
+name = "euclideanMidpointRigidity"
+git = "https://github.com/JD-Jones-ASES/EuclideanMidpointRigidity.git"
+rev = "4929a3c843e8b8c2905581575d9d5644694e0c79"
+
+[[lean_lib]]
+name = "FisherMidpoint"
+
+[[lean_lib]]
+name = "Challenge"
+
+[[lean_lib]]
+name = "Solution"
