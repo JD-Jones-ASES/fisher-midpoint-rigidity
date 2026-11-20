@@ -1,2 +1,4 @@
 module
-public import FisherMidpoint.Parallel
+public import FisherMidpoint.Integration
+public import FisherMidpoint.Midpoints
+public import FisherMidpoint.Tilts
