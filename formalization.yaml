@@ -18,7 +18,7 @@ repository:
   role: substantive-development
 classification:
   arxiv: ["math.ST", "math.DG"]
-  msc2020: ["62B11", "53B05", "60E10"]
+  msc2020: ["62B11", "53B12", "60E10"]
 sources:
   - title: Fisher midpoint rigidity in exponential families
     type: original-proof
@@ -28,7 +28,7 @@ sources:
   - title: Dual-connection midpoint matrix means and their Gauss composition
     authors: [Frank Nielsen, Kazuki Okamura]
     type: paper
-    relationship: adapts
+    relationship: background
     id: https://arxiv.org/abs/2609.07551v2
     location: Remark 8.7 and Theorem 9.2
     note: The geodesic expansion and splitting for a constant cubic provide the starting point for the scalar test.
@@ -53,7 +53,7 @@ related_formalizations:
 automation:
   methods:
     - method: agent
-      models: [GPT-6.2 Astra]
+      models: [GPT-6]
       framework: OpenAI Codex
       tool_setup: Lean 4, Mathlib, Python and SymPy
       prompting_notes: JD Jones selected the question and commissioned the written research and formalization.
