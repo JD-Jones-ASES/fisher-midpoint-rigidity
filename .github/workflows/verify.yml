@@ -1,0 +1,65 @@
+name: Verify Fisher midpoint rigidity
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  kernels:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@f061402b660e0c34644504b324e830f2991d4865
+        with:
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: true
+      - name: Build statement and proofs from the pinned sources
+        run: lake build
+      - name: Check the public proof interface and its mutation controls
+        run: |
+          python3 scripts/check_sources.py
+          python3 scripts/check_contracts.py
+      - name: Replay the symbolic identities and coupled examples
+        run: |
+          python3 -m pip install sympy==1.14.0
+          python3 scripts/exact_replay.py
+      - name: Install the sandbox pinned by Palomar
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y meson ninja-build pkg-config libcap-dev apparmor
+          curl --fail --silent --show-error --location https://raw.githubusercontent.com/PalomarRegistry/PalomarSubmission/14aa8d6b3c2f14a8540605e37144560b9a00e7e7/scripts/install_bwrap.sh --output "$RUNNER_TEMP/install_bwrap.sh"
+          bash "$RUNNER_TEMP/install_bwrap.sh" "$RUNNER_TEMP/fisher-bwrap" > "$RUNNER_TEMP/bwrap-path"
+          printf 'COMPARATOR_BWRAP=%s\n' "$(cat "$RUNNER_TEMP/bwrap-path")" >> "$GITHUB_ENV"
+      - name: Compare declarations and replay the proof in three kernels
+        run: |
+          mkdir -p .lake/verification
+          prefix="$(lean --print-prefix)"
+          jq --arg nano "$prefix/bin/nanoda_bin" --arg con "$prefix/bin/con-ron" '. + {external_kernels: {nanoda: [$nano], "con-ron": [$con, "--jobs=2"]}}' comparator.json > .lake/verification/kernels.json
+          lake comparator --config .lake/verification/kernels.json 2>&1 | tee .lake/verification/comparator.log
+          for kernel in 'Lean default' nanoda con-ron; do
+            grep -F "$kernel kernel accepts the solution" .lake/verification/comparator.log
+          done
+          git diff --exit-code
+      - name: Archive exact-commit kernel evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: kernel-replay-${{ github.sha }}
+          path: .lake/verification/
+          if-no-files-found: warn

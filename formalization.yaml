@@ -1,0 +1,72 @@
+version: v0.4
+project:
+  name: Fisher midpoint rigidity in exponential families
+  description: >-
+    In a finite-dimensional regular exponential family with a flat Fisher chart,
+    replace two nearby parameters by their natural and expectation averages.
+    Preservation of their Fisher midpoint forces the sufficient statistic, after
+    a fixed invertible affine change, to have independent Gaussian location and
+    fixed-shape gamma coordinates. Equidistance from the original endpoints
+    suffices, as does vanishing of just the longitudinal fourth-order displacement.
+    The hypothesis on one open patch determines the complete Laplace finiteness
+    domain and the law under every admissible natural tilt. The canonical products
+    preserve the Fisher midpoint for every pair.
+  authors: [JD Jones]
+  responsible_maintainers: [JD Jones]
+  license: MIT
+repository:
+  role: substantive-development
+classification:
+  arxiv: ["math.ST", "math.DG"]
+  msc2020: ["62B11", "53B05", "60E10"]
+sources:
+  - title: Fisher midpoint rigidity in exponential families
+    type: original-proof
+    relationship: other
+    location: Proof.md
+    note: The scalar fourth-order characterization and identification of the maximal tilted law are developed here.
+  - title: Dual-connection midpoint matrix means and their Gauss composition
+    authors: [Frank Nielsen, Kazuki Okamura]
+    type: paper
+    relationship: adapts
+    id: https://arxiv.org/abs/2609.07551v2
+    location: Remark 8.7 and Theorem 9.2
+    note: The geodesic expansion and splitting for a constant cubic provide the starting point for the scalar test.
+  - title: Classification of Calabi Hypersurfaces with parallel Fubini-Pick form
+    authors: [Ruiwei Xu, Miaoxin Lei]
+    type: paper
+    relationship: background
+    id: https://arxiv.org/abs/2007.02614
+    location: Theorem 1.3 and Example 2.1
+    note: Gives the local quadratic and negative-logarithmic normal form under flatness and parallelism.
+  - title: Hessian potentials with parallel derivatives
+    authors: [Roland Hildebrand]
+    type: paper
+    relationship: background
+    id: https://arxiv.org/abs/1303.7366
+    location: Section 3
+    note: Gives the Hessian differential equation associated with a parallel cubic and its algebraic interpretation.
+related_formalizations:
+  - id: https://github.com/JD-Jones-ASES/EuclideanMidpointRigidity/tree/4929a3c843e8b8c2905581575d9d5644694e0c79
+    relationship: builds-on
+    note: Pinned solution dependency for existence of the short geodesic branch and its controlled fourth-order remainder.
+automation:
+  methods:
+    - method: agent
+      models: [GPT-6.2 Astra]
+      framework: OpenAI Codex
+      tool_setup: Lean 4, Mathlib, Python and SymPy
+      prompting_notes: JD Jones selected the question and commissioned the written research and formalization.
+review:
+  status: self-assessed
+  notes: Worldwide priority and independent human specialist review remain open.
+fidelity:
+  divergences: >-
+    Riemannian flatness and regularity are expressed in a supplied Euclidean Fisher
+    chart on a connected open set, with invertible C4 natural and expectation charts.
+    Their metric pairing and the gradient of the actual log-Laplace transform are
+    explicit hypotheses. Connection coefficients, their commutation and parallelism,
+    the affine statistic, independence, and the maximal domain are derived.
+    The input measure is the law of the sufficient statistic at one reference member.
+    The converse uses the global natural and expectation coordinates of the canonical
+    products. Symbolic examples in the separate exact replay illustrate these theorems.

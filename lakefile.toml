@@ -1,6 +1,6 @@
 name = "fisherMidpointRigidity"
 version = "0.1.0"
-defaultTargets = ["FisherMidpoint"]
+defaultTargets = ["FisherMidpoint", "Challenge", "Solution"]
 
 [[require]]
 name = "mathlib"

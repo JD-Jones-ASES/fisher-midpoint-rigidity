@@ -1,0 +1,19 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "FisherMidpoint.from_exact_averages",
+    "FisherMidpoint.from_equidistance",
+    "FisherMidpoint.from_fourth_order",
+    "FisherMidpoint.affine_chart_formulas",
+    "FisherMidpoint.product_log_partition",
+    "FisherMidpoint.gamma_transform_and_domain",
+    "FisherMidpoint.global_product_averages",
+    "FisherMidpoint.fisher_axis_coordinates"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ]
+}

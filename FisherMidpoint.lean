@@ -1,4 +1,3 @@
 module
-public import FisherMidpoint.Integration
-public import FisherMidpoint.Midpoints
-public import FisherMidpoint.Tilts
+public import FisherMidpoint.Canonical
+public import FisherMidpoint.Converse
